@@ -856,7 +856,7 @@ static void calc_elapsed(switch_rtp_t *rtp_session, switch_rtp_ice_t *ice)
 
 static switch_status_t ice_out(switch_rtp_t *rtp_session, switch_rtp_ice_t *ice, switch_bool_t force)
 {
-	uint8_t buf[256] = { 0 };
+	uint8_t buf[512] = { 0 };
 	switch_stun_packet_t *packet;
 	unsigned int elapsed;
 	switch_size_t bytes;
