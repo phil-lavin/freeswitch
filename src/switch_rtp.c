@@ -88,6 +88,7 @@ static const switch_payload_t INVALID_PT = 255;
 #define SDP_UFRAG_MAX_SIZE 256 	/* From draft-ietf-mmusic-ice-sip-sdp-24: "the ice-ufrag attribute MUST NOT be longer than 32
 								 * characters when sending, but an implementation MUST accept up to 256
 								 * characters when receiving." */
+#define STUN_PACKET_MAX_SIZE 1024 /* Large enough for 513 byte username plus other attributes */
 
 static switch_port_t START_PORT = RTP_START_PORT;
 static switch_port_t END_PORT = RTP_END_PORT;
@@ -852,7 +853,7 @@ static void calc_elapsed(switch_rtp_t *rtp_session, switch_rtp_ice_t *ice)
 
 static switch_status_t ice_out(switch_rtp_t *rtp_session, switch_rtp_ice_t *ice, switch_bool_t force)
 {
-	uint8_t buf[512] = { 0 };
+	uint8_t buf[STUN_PACKET_MAX_SIZE] = { 0 };
 	switch_stun_packet_t *packet;
 	unsigned int elapsed;
 	switch_size_t bytes;
