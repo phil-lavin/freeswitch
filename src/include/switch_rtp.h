@@ -118,6 +118,7 @@ typedef struct ice_s {
 	char *ufrag;
 	char *pwd;
 	char *options;
+	switch_core_media_ice_type_t type;
 
 } ice_t;
 
