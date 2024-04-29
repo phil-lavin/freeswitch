@@ -4136,6 +4136,8 @@ static switch_status_t check_ice(switch_media_handle_t *smh, switch_media_type_t
 					switch_rtp_set_remote_ssrc(engine->rtp_session, engine->remote_ssrc);
 				}
 
+			} else if (!strcasecmp(attr->a_name, "ice-lite")) {
+				engine->ice_in.type |= ICE_LITE;
 
 #ifdef RTCP_MUX
 			} else if (!strcasecmp(attr->a_name, "rtcp-mux")) {
