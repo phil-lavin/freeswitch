@@ -341,6 +341,7 @@ SWITCH_DECLARE(switch_bool_t) switch_core_check_dtls_pem(const char *file)
 	FILE *fp = NULL;
 	EVP_PKEY *pkey = NULL;
 	int bits = 0;
+	int type = 0;
 
 	if (switch_is_file_path(file)) {
 		pem = strdup(file);
@@ -369,9 +370,10 @@ SWITCH_DECLARE(switch_bool_t) switch_core_check_dtls_pem(const char *file)
 	}
 
 	bits = EVP_PKEY_bits(pkey);
+	type = EVP_PKEY_get_base_id(pkey);
 	EVP_PKEY_free(pkey);
 
-	if (bits < 4096) {
+	if ((type == EVP_PKEY_EC && bits < 256) || (type != EVP_PKEY_EC && bits < 4096)) {
 		switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_WARNING, "%s cryptographic length is too short (%d), it will be regenerated\n", pem, bits);
 		goto rename_pem;
 	}
