@@ -3218,6 +3218,8 @@ static int dtls_state_setup(switch_rtp_t *rtp_session, switch_dtls_t *dtls)
 	X509 *cert;
 	switch_secure_settings_t	ssec;	/* Used just to wrap over params in a call to switch_rtp_add_crypto_key. */
 	int r = 0;
+	switch_channel_t *channel = NULL;
+	switch_event_t *event;
 
 	uint8_t raw_key_data[cr_kslen * 2];
 	unsigned char local_key_buf[cr_kslen];
@@ -3286,6 +3288,16 @@ static int dtls_state_setup(switch_rtp_t *rtp_session, switch_dtls_t *dtls)
 	}
 
 	dtls_set_state(dtls, DS_READY);
+
+	// Generate an event which we can use to take action when the ICE/DTLS is complete
+	if (rtp_session->session) {
+		channel = switch_core_session_get_channel(rtp_session->session);
+
+		if (switch_event_create(&event, SWITCH_EVENT_CHANNEL_PROGRESS_ICE_COMPLETE) == SWITCH_STATUS_SUCCESS) {
+			switch_channel_event_set_data(channel, event);
+			switch_event_fire(&event);
+		}
+	}
 
 	return 0;
 }

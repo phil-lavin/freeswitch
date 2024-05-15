@@ -1989,6 +1989,7 @@ typedef uint32_t switch_io_flag_t;
     SWITCH_EVENT_CHANNEL_UNBRIDGE   - A channel has unbridged from another channel
     SWITCH_EVENT_CHANNEL_PROGRESS	- A channel has started ringing
     SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA	- A channel has started early media
+    SWITCH_EVENT_CHANNEL_PROGRESS_ICE_COMPLETE	- A channel has completed ICE negotiations and media is ready to flow
     SWITCH_EVENT_CHANNEL_OUTGOING	- A channel has been unparked
     SWITCH_EVENT_CHANNEL_PARK 		- A channel has been parked
     SWITCH_EVENT_CHANNEL_UNPARK 	- A channel has been unparked
@@ -2085,6 +2086,7 @@ typedef enum {
 	SWITCH_EVENT_CHANNEL_UNBRIDGE,
 	SWITCH_EVENT_CHANNEL_PROGRESS,
 	SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA,
+	SWITCH_EVENT_CHANNEL_PROGRESS_ICE_COMPLETE,
 	SWITCH_EVENT_CHANNEL_OUTGOING,
 	SWITCH_EVENT_CHANNEL_PARK,
 	SWITCH_EVENT_CHANNEL_UNPARK,
