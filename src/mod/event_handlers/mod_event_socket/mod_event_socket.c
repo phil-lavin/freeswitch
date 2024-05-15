@@ -2109,6 +2109,7 @@ static switch_status_t parse_command(listener_t *listener, switch_event_t **even
 			listener->event_list[SWITCH_EVENT_CHANNEL_PARK] = 1;
 			listener->event_list[SWITCH_EVENT_CHANNEL_PROGRESS] = 1;
 			listener->event_list[SWITCH_EVENT_CHANNEL_PROGRESS_MEDIA] = 1;
+			listener->event_list[SWITCH_EVENT_CHANNEL_PROGRESS_ICE_COMPLETE] = 1;
 			listener->event_list[SWITCH_EVENT_CHANNEL_STATE] = 1;
 			listener->event_list[SWITCH_EVENT_CHANNEL_UNBRIDGE] = 1;
 			listener->event_list[SWITCH_EVENT_CHANNEL_UNPARK] = 1;
