@@ -3963,17 +3963,36 @@ static switch_call_direction_t switch_ice_direction(switch_rtp_engine_t *engine,
 }
 
 static switch_core_media_ice_type_t switch_determine_ice_type(switch_rtp_engine_t *engine, switch_core_session_t *session) {
+	int local_lite;
+	int remote_lite;
+
 	switch_core_media_ice_type_t ice_type = ICE_VANILLA;
 
-	if (switch_channel_var_true(session->channel, "ice_lite")) {
+	// Determine full ice or ice lite
+	local_lite = switch_channel_var_true(session->channel, "ice_lite");
+	remote_lite = (engine->ice_in.type & ICE_LITE);
+
+	// @see RFC 8445 6.1.1.
+
+	// Freeswitch is lite, other party is full
+	if (local_lite && !remote_lite) {
+		// The full agent MUST take the controlling role and Freeswitch MUST take the controlled role
 		ice_type |= ICE_CONTROLLED;
 		ice_type |= ICE_LITE;
-	} else {
+
+	// Both parties are the same type of ice (full or lite)
+	} else if (local_lite == remote_lite) {
 		switch_call_direction_t direction = switch_ice_direction(engine, session);
+
+		// The initiating agent that started the ICE processing MUST take the controlling role
+		// and Freeswitch MUST take the controlled role
 		if (direction == SWITCH_CALL_DIRECTION_INBOUND) {
 			ice_type |= ICE_CONTROLLED;
 		}
 	}
+
+	// If Freeswitch is full and other party is lite, we have nothing to set as the full agent MUST take the controlling
+	// role, and the lite agent MUST take the controlled role
 
 	return ice_type;
 }
